@@ -10,18 +10,33 @@ console.log(app);
 
 document.body.appendChild(app.view);
 
+//add onprogresslistener
+loader.onProgress.add(loading);
 //load an image to WebGL texture
-PIXI.Loader.shared
+loader
     .add('assets/tank.png')
     .load(setup);
+
+//log when loading
+function loading(loader, resources){
+    console.log(`loading ${resources.url}`);
+    console.log(`progress ${loader.progress} %`)
+}
 
 //what to do when loaded
 function setup() {
     let tank = new PIXI.Sprite(
-        PIXI.Loader.shared.resources['assets/tank.png'].texture
+        resources['assets/tank.png'].texture
     );
     
-    tank.width = 50;
-    tank.height = 50;
+    tank.width = 100;
+    tank.height = 100;
+    tank.position.set(150, 150);
     app.stage.addChild(tank);
+    tank.anchor.set(0.5, 0.5);
+    rotateForever(tank);
+}
+
+function rotateForever(sprite){
+    setInterval(() => sprite.rotation += 0.1, 100);
 }
