@@ -9,6 +9,7 @@ const app = new Application({width: 500, height: 500});
 console.log(app);
 
 document.body.appendChild(app.view);
+let tank, state;
 
 //add onprogresslistener
 loader.onProgress.add(loading);
@@ -26,7 +27,7 @@ function loading(loader, resources){
 
 //what to do when loaded
 function setup() {
-    let tank = new PIXI.Sprite(
+    tank = new PIXI.Sprite(
         resources['assets/tank.png'].texture
     );
     const id = resources['assets/soviet.json'].textures;
@@ -34,12 +35,33 @@ function setup() {
     const sovSoldier = new Sprite(id['soviet-soldier.png']);
 
     app.stage.addChild(background);    
+    
     tank.width = 100;
     tank.height = 100;
     tank.position.set(100, 250);
+    tank.vx = 0;
+    
     app.stage.addChild(tank);
     tank.anchor.set(0.5, 0.5);
     
+    state = play;
+    //animate tank move right 60 fps
+    app.ticker.add((delta) => moveLoop(delta));
+    setTimeout(() => state = stop, 4000);
+
+}
+
+function moveLoop(delta) {
+    state(delta);
+}
+
+function play(delta) {
+    tank.vx = 1.5;
+    tank.x += tank.vx;
+}
+
+function stop(delta) {
+    //empty so when the game state is stop nothing happened
 }
 //either this or setTimeout but the dlay multiplied by the limit to create delayed loop
 //function rotateForever(sprite){
