@@ -36,27 +36,52 @@ function setup() {
 
     app.stage.addChild(background);    
     
+
+    //controls 
+    const up = keyboard(87),
+      down = keyboard(83),
+      left = keyboard(65),
+      right = keyboard(68);
+
     tank.width = 100;
     tank.height = 100;
     tank.position.set(100, 250);
     tank.vx = 0;
+    tank.vy = 0;
     
     app.stage.addChild(tank);
     tank.anchor.set(0.5, 0.5);
     
+    //controls controller
+    right.press = () => {
+      tank.vx = 1;
+    }
+
+    right.release = () => {
+      if(!left.isDown) tank.vx = 0;
+    }
+    
+    left.press = () => {
+      tank.vx = -1;
+    }
+
+    left.release = () => {
+      if(!right.isDown) tank.vx = 0;
+    }
+    
     state = play;
     //animate tank move right 60 fps
-    app.ticker.add((delta) => moveLoop(delta));
-    setTimeout(() => state = stop, 4000);
+    app.ticker.add((delta) => gameLoop(delta));
+    
 
 }
 
-function moveLoop(delta) {
+function gameLoop(delta) {
     state(delta);
 }
 
 function play(delta) {
-    tank.vx = 1.5;
+    tank.y += tank.vy;
     tank.x += tank.vx;
 }
 
@@ -67,3 +92,41 @@ function stop(delta) {
 //function rotateForever(sprite){
 //    setInterval(() => sprite.angle += 10, 100);
 //}
+
+//The `keyboard` helper function
+function keyboard(keyCode) {
+    const key = {};
+    key.code = keyCode;
+    key.isDown = false;
+    key.isUp = true;
+    key.press = undefined;
+    key.release = undefined;
+    //The `downHandler`
+    key.downHandler = (event) => {
+      if (event.keyCode === key.code) {
+        if (key.isUp && key.press) {
+          key.press();
+        }
+        key.isDown = true;
+        key.isUp = false;
+      }
+      event.preventDefault();
+    };
+  
+    //The `upHandler`
+    key.upHandler = (event) => {
+      if (event.keyCode === key.code) {
+        if (key.isDown && key.release) {
+          key.release();
+        }
+        key.isDown = false;
+        key.isUp = true;
+      }
+      event.preventDefault();
+    };
+  
+    //Attach event listeners
+    window.addEventListener("keydown", key.downHandler.bind(key), false);
+    window.addEventListener("keyup", key.upHandler.bind(key), false);
+    return key;
+  }
