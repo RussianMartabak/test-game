@@ -1,8 +1,16 @@
 {"frames": {
 
+"ppsh.png":
+{
+	"frame": {"x":0,"y":0,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
 "snowbg.png":
 {
-	"frame": {"x":0,"y":0,"w":500,"h":500},
+	"frame": {"x":0,"y":50,"w":500,"h":500},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
@@ -10,7 +18,7 @@
 },
 "soviet-soldier.png":
 {
-	"frame": {"x":500,"y":0,"w":50,"h":50},
+	"frame": {"x":50,"y":0,"w":50,"h":50},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
@@ -21,8 +29,8 @@
 	"version": "1.0",
 	"image": "soviet.png",
 	"format": "RGBA8888",
-	"size": {"w":550,"h":500},
+	"size": {"w":500,"h":550},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c6d7051d2c4bd8636dc939c69d09eb98:7af2fa27527a575ab8a5e73fbb314ac4:7d139a4bc9da1630688a7d308a73f917$"
+	"smartupdate": "$TexturePacker:SmartUpdate:fed3b1e83185955e2eac33cdaf197f09:28cf2da244056dbaec81e5fcfce51da2:7d139a4bc9da1630688a7d308a73f917$"
 }
 }

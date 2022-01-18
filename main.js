@@ -2,14 +2,15 @@
 const Application = PIXI.Application,
     loader = PIXI.Loader.shared,
     resources = PIXI.Loader.shared.resources,
-    Sprite = PIXI.Sprite;
-
+    Sprite = PIXI.Sprite,
+    Container = PIXI.Container;
+    
 
 const app = new Application({width: 500, height: 500});
 console.log(app);
 
 document.body.appendChild(app.view);
-let tank, state;
+let tank, state, sovSoldier;
 
 //add onprogresslistener
 loader.onProgress.add(loading);
@@ -32,41 +33,55 @@ function setup() {
     );
     const id = resources['assets/soviet.json'].textures;
     const background = new Sprite(id['snowbg.png']);
-    const sovSoldier = new Sprite(id['soviet-soldier.png']);
-
-    app.stage.addChild(background);    
     
+    const ppsh = new Sprite(id['ppsh.png']);
+    const body = new Sprite(id['soviet-soldier.png']);
+    sovSoldier = gruppen([body, ppsh]);
+    
+    console.log(sovSoldier.children);
+    
+    
+
+    app.stage.addChild(background);  
 
     //controls 
     const up = keyboard(87),
       down = keyboard(83),
       left = keyboard(65),
       right = keyboard(68);
+    
+    
+    
+    app.stage.addChild(sovSoldier);
+    
+    
+    sovSoldier.position.set(100, 250);
+    sovSoldier.vx = 0;
+    sovSoldier.vy = 0;
 
-    tank.width = 100;
-    tank.height = 100;
-    tank.position.set(100, 250);
-    tank.vx = 0;
-    tank.vy = 0;
-    
-    app.stage.addChild(tank);
-    tank.anchor.set(0.5, 0.5);
-    
     //controls controller
     right.press = () => {
-      tank.vx = 1;
+      sovSoldier.vx = 1.5;
     }
 
     right.release = () => {
-      if(!left.isDown) tank.vx = 0;
+      if(!left.isDown) {
+        sovSoldier.vx = 0;
+      } else {
+        sovSoldier.vx = -1.5;
+      }
     }
     
     left.press = () => {
-      tank.vx = -1;
+      sovSoldier.vx = -1.5;
     }
 
     left.release = () => {
-      if(!right.isDown) tank.vx = 0;
+      if(!right.isDown) {
+        sovSoldier.vx = 0
+      } else {
+        sovSoldier.vx = 1.5;
+      }
     }
     
     state = play;
@@ -81,8 +96,8 @@ function gameLoop(delta) {
 }
 
 function play(delta) {
-    tank.y += tank.vy;
-    tank.x += tank.vx;
+    sovSoldier.y += sovSoldier.vy;
+    sovSoldier.x += sovSoldier.vx;
 }
 
 function stop(delta) {
@@ -130,3 +145,12 @@ function keyboard(keyCode) {
     window.addEventListener("keyup", key.upHandler.bind(key), false);
     return key;
   }
+
+//make a grouped sprite
+function gruppen(spriteArray) {
+  let group = new Container()
+  spriteArray.forEach(element => {
+    group.addChild(element)
+  });
+  return group;
+}
