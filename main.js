@@ -10,7 +10,13 @@ const app = new Application({width: 500, height: 500});
 console.log(app);
 
 document.body.appendChild(app.view);
-let tank, state, sovSoldier;
+let tank, state, sovSoldier, currentInterval;
+const ppshSound = document.querySelector('#ppsh');
+
+//add sounds
+//sounds.load(['wpnfire_ppsh_plyr_blnc_ed3.wav']);
+//sounds.whenLoaded = () => console.log('sound loaded');
+//const ppshFire = sounds['wpnfire_ppsh_plyr_blnc_ed3.wav'];
 
 //add onprogresslistener
 loader.onProgress.add(loading);
@@ -34,13 +40,15 @@ function setup() {
     const id = resources['assets/soviet.json'].textures;
     const background = new Sprite(id['snowbg.png']);
     
-    const ppsh = new Sprite(id['ppsh.png']);
+    const ppsh = firearm([id['ppsh.png'], id['ppsh-fire.png']], 20, ppshSound);
+    console.log(ppsh.sound);
+    ppsh.sound.volume = 0.05;
     const body = new Sprite(id['soviet-soldier.png']);
     sovSoldier = gruppen([body, ppsh]);
     
+    
+
     console.log(sovSoldier.children);
-    
-    
 
     app.stage.addChild(background);  
 
@@ -48,8 +56,9 @@ function setup() {
     const up = keyboard(87),
       down = keyboard(83),
       left = keyboard(65),
-      right = keyboard(68);
-    
+      right = keyboard(68),
+      space = keyboard(32);
+      
     
     
     app.stage.addChild(sovSoldier);
@@ -60,6 +69,31 @@ function setup() {
     sovSoldier.vy = 0;
 
     //controls controller
+    up.press = () => {
+      sovSoldier.vy = -1.5;
+    }
+
+    up.release = () => {
+      if(!down.isDown) {
+        sovSoldier.vy = 0;
+      } else {
+        sovSoldier.vy = 1.5;
+      }
+    }
+    
+    down.press = () => {
+      sovSoldier.vy = 1.5;
+    }
+
+    down.release = () => {
+      if(!up.isDown) {
+        sovSoldier.vy = 0;
+      } else {
+        sovSoldier.vy = -1.5;
+      }
+      console.log(sovSoldier.y);
+    }
+    
     right.press = () => {
       sovSoldier.vx = 1.5;
     }
@@ -82,6 +116,23 @@ function setup() {
       } else {
         sovSoldier.vx = 1.5;
       }
+    }
+
+    space.press = () => {
+      ppsh.loop = true;
+      ppsh.animationSpeed = 0.5;
+      ppsh.play();
+      currentInterval = setInterval(() => {
+        ppsh.sound.currentTime = 0;
+        ppsh.sound.play();
+      }, 1000/ppsh.rps);
+
+      
+    }
+
+    space.release = () => {
+      clearInterval(currentInterval);
+      ppsh.gotoAndStop(0);
     }
     
     state = play;
@@ -153,4 +204,20 @@ function gruppen(spriteArray) {
     group.addChild(element)
   });
   return group;
+}
+
+//make animated sprite
+function animation(textureArray) {
+  let anim = new PIXI.AnimatedSprite(textureArray);
+  
+  return anim; 
+}
+
+//make a gun constructor that inherit animatedsprite
+function firearm(textureArray, rps, sound) {
+  let anim = new PIXI.AnimatedSprite(textureArray);
+  
+  anim.rps = rps;
+  anim.sound = sound;
+  return anim;
 }

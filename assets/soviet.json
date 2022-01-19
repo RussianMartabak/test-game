@@ -1,16 +1,24 @@
 {"frames": {
 
-"ppsh.png":
+"ppsh-fire.png":
 {
-	"frame": {"x":0,"y":0,"w":50,"h":50},
+	"frame": {"x":0,"y":0,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
-	"sourceSize": {"w":50,"h":50}
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
+},
+"ppsh.png":
+{
+	"frame": {"x":100,"y":0,"w":100,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
 },
 "snowbg.png":
 {
-	"frame": {"x":0,"y":50,"w":500,"h":500},
+	"frame": {"x":0,"y":100,"w":500,"h":500},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
@@ -18,19 +26,19 @@
 },
 "soviet-soldier.png":
 {
-	"frame": {"x":50,"y":0,"w":50,"h":50},
+	"frame": {"x":200,"y":0,"w":100,"h":100},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
-	"sourceSize": {"w":50,"h":50}
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
+	"sourceSize": {"w":100,"h":100}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "soviet.png",
 	"format": "RGBA8888",
-	"size": {"w":500,"h":550},
+	"size": {"w":500,"h":600},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:fed3b1e83185955e2eac33cdaf197f09:28cf2da244056dbaec81e5fcfce51da2:7d139a4bc9da1630688a7d308a73f917$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d17586db027504e6ed1417e6dfb4163f:72b3d5d469130ee7ccc5ab29fab151f0:7d139a4bc9da1630688a7d308a73f917$"
 }
 }
