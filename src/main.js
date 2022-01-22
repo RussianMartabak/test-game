@@ -13,7 +13,8 @@ const app = new Application({width: 500, height: 500});
 console.log(app);
 
 document.body.appendChild(app.view);
-let tank, state, sovSoldier, currentInterval;
+let tank, state, sovSoldier, currentInterval, bullet;
+let movingBullets = [];
 const ppshSound = document.querySelector('#ppsh');
 
 //add sounds
@@ -40,21 +41,30 @@ function setup() {
     tank = new PIXI.Sprite(
         resources['static/assets/tank.png'].texture
     );
+    
     const id = resources['static/assets/soviet.json'].textures;
     const background = new Sprite(id['snowbg.png']);
     
+    const messageStyle = new PIXI.TextStyle({
+      fontSize: 18,
+      fontFamily: "Helvetica",
+    })
+    const message = new PIXI.Text("John Mctavish, 62nd Guards Rifle Division", messageStyle);
+    message.y = 450;
+    
+
     const ppsh = firearm([id['ppsh.png'], id['ppsh-fire.png']], 20, ppshSound);
     console.log(ppsh.sound);
     ppsh.sound.volume = 0.05;
     const body = new Sprite(id['soviet-soldier.png']);
     sovSoldier = gruppen([body, ppsh]);
     
-    
+    bullet = new Sprite(id["bullet.png"]);
 
     console.log(sovSoldier.children);
 
     app.stage.addChild(background);  
-
+    app.stage.addChild(message);
     //controls 
     const up = keyboard(87),
       down = keyboard(83),
@@ -62,7 +72,6 @@ function setup() {
       right = keyboard(68),
       space = keyboard(32);
       
-    
     
     app.stage.addChild(sovSoldier);
     
@@ -128,14 +137,21 @@ function setup() {
       currentInterval = setInterval(() => {
         ppsh.sound.currentTime = 0;
         ppsh.sound.play();
+        
+        let bullet = liveBullet(ppsh, 6);
+        app.stage.addChild(bullet);
+        movingBullets.push(bullet);
       }, 1000/ppsh.rps);
 
       
     }
 
     space.release = () => {
+      console.log(movingBullets);
+      
       clearInterval(currentInterval);
       ppsh.gotoAndStop(0);
+      
     }
     
     state = play;
@@ -152,6 +168,14 @@ function gameLoop(delta) {
 function play(delta) {
     sovSoldier.y += sovSoldier.vy;
     sovSoldier.x += sovSoldier.vx;
+    movingBullets.forEach((e, index) => {
+      if (e.x < e.limitx) {
+        e.x += e.vx;
+      } else if (e.x > e.limitx) {
+        movingBullets.splice(index, 1);
+        app.stage.removeChild(e);
+      }
+    })
 }
 
 function stop(delta) {
@@ -173,7 +197,9 @@ function gruppen(spriteArray) {
   return group;
 }
 
-
+function move(sprite, vx, vy) {
+  //inside the gameloop move the object at their velocity props
+}
 
 //make a gun constructor that inherit animatedsprite
 function firearm(textureArray, rps, sound) {
@@ -181,5 +207,22 @@ function firearm(textureArray, rps, sound) {
   
   anim.rps = rps;
   anim.sound = sound;
+  anim.firing = false;
   return anim;
+}
+
+function moveBullet(object) {
+  
+}
+
+function liveBullet(firearm, velocity) {
+  let firearmPos = firearm.parent.toGlobal(firearm.position);
+  const liveProps = {
+    x : firearmPos.x + firearm.width / 2,
+    y : firearmPos.y,
+    vx : velocity,
+    limitx : 495
+  }
+  return Object.assign(bullet, liveProps);
+  //return {x, y, vx, limitx};
 }
