@@ -1,0 +1,28 @@
+{
+  "name": "test-game",
+  "version": "1.0.0",
+  "description": "Make sure Node.js is installed then type `http-server` inside the folder to run it",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RussianMartabak/test-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RussianMartabak/test-game/issues"
+  },
+  "homepage": "https://github.com/RussianMartabak/test-game#readme",
+  "dependencies": {
+    "pixi.js": "^5.3.10"
+  },
+  "devDependencies": {
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1"
+  }
+}
